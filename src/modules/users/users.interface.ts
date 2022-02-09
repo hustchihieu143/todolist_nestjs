@@ -9,3 +9,5 @@ export interface LOGIN_USER {
   email: string;
   password: string;
 }
+
+export interface TEST {}
