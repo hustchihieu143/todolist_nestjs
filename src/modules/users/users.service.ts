@@ -2,7 +2,7 @@ import { UserEntity } from './../../models/entities/user.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/models/repositories/user.repository';
-import { CREATE_USER } from './users.interface';
+import { CREATE_USER } from './user.interface';
 
 @Injectable()
 export class UsersService {

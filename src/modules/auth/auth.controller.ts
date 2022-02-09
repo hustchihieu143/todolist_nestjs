@@ -1,6 +1,6 @@
 import { LocalAuthGuard } from './local-auth.guard';
-import { LOGIN_USER } from './../users/users.interface';
-import { CREATE_USER } from './../../../dist/modules/users/user.interface.d';
+import { CREATE_USER, LOGIN_USER } from '../users/user.interface';
+
 import { UsersService } from './../users/users.service';
 import { ApiBody } from '@nestjs/swagger';
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
