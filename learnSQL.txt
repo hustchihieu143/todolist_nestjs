@@ -85,6 +85,65 @@ createQueryBuilder("user")
 createQueryBuilder("user")
     .orderBy("user.id", "ASC")
 
-    createQueryBuilder("user")
-    .orderBy("user.name")
-    .addOrderBy("user.id");
+createQueryBuilder("user")
+  .orderBy("user.name")
+  .addOrderBy("user.id");
+
+createQueryBuilder("user")
+    .orderBy({
+        "user.name": "ASC",
+        "user.id": "DESC"
+    });
+
+11, groupBy
+createQueryBuilder("user")
+    .groupBy("user.name")
+    .addGroupBy("user.id");
+
+12, limit
+createQueryBuilder("user")
+    .limit(10) 
+
+13, leftJoinAndSelect
+const user = await createQueryBuilder("user")
+    .leftJoinAndSelect("user.photos", "photo", "photo.isRemoved = :isRemoved", { isRemoved: false })
+    .where("user.name = :name", { name: "Timber" })
+    .getOne();
+
+14, Inner and left joins
+const user = await createQueryBuilder("user")
+    .innerJoinAndSelect("user.photos", "photo", "photo.isRemoved = :isRemoved", { isRemoved: false })
+    .where("user.name = :name", { name: "Timber" })
+    .getOne();
+15, get some field    
+const users = await getRepository(User)
+    .createQueryBuilder("user")
+    .select([
+        "user.id",
+        "user.name"
+    ])
+    .getMany();
+16, subQuery
+const posts = await connection.getRepository(Post)
+    .createQueryBuilder("post")
+    .where(qb => {
+        const subQuery = qb.subQuery()
+            .select("user.name")
+            .from(User, "user")
+            .where("user.registered = :registered")
+            .getQuery();
+        return "post.title IN " + subQuery;
+    })
+    .setParameter("registered", true)
+    .getMany();
+
+const userQb = await connection.getRepository(User)
+    .createQueryBuilder("user")
+    .select("user.name")
+    .where("user.registered = :registered", { registered: true });
+
+const posts = await connection.getRepository(Post)
+    .createQueryBuilder("post")
+    .where("post.title IN (" + userQb.getQuery() + ")")
+    .setParameters(userQb.getParameters())
+    .getMany();        
