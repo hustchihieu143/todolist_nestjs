@@ -14,6 +14,15 @@ export class UserRepository extends BaseRepository<UserEntity> {
     return result.length > 0 ? result[0] : undefined;
   }
 
+  async findOneByEmail(email: string): Promise<UserEntity> {
+    const result = await this.createQueryBuilder('users')
+      .select('*')
+      .andWhere('users.email = :email', { email: email })
+      .take(1)
+      .execute();
+    return result.length > 0 ? result[0] : undefined;
+  }
+
   public async findBatch(from: number, count: number): Promise<UserEntity[]> {
     return this.createQueryBuilder()
       .orderBy('id', 'ASC')

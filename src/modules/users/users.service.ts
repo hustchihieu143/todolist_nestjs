@@ -14,7 +14,7 @@ export class UsersService {
   ) {}
 
   async findOne(email: string): Promise<UserEntity> {
-    const user = await this.userRepoMaster.findOne(email);
+    const user = await this.userRepoMaster.findOneByEmail(email);
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return user;
   }

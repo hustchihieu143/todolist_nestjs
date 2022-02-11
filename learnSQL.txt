@@ -1,0 +1,90 @@
+1, SELECT
+const user = await getConnection()
+    .createQueryBuilder()
+    .select("user")
+    .from(User, "user")
+    .where("user.id = :id", { id: 1 })
+    .getOne();
+
+2, INSERT
+await getConnection()
+    .createQueryBuilder()
+    .insert()
+    .into(User)
+    .values([
+        { firstName: "Timber", lastName: "Saw" },
+        { firstName: "Phantom", lastName: "Lancer" }
+     ])
+    .execute();
+
+3, UPDATE
+await getConnection()
+    .createQueryBuilder()
+    .update(User)
+    .set({ firstName: "Timber", lastName: "Saw" })
+    .where("id = :id", { id: 1 })
+    .execute();
+
+4, DELETE
+await getConnection()
+    .createQueryBuilder()
+    .delete()
+    .from(User)
+    .where("id = :id", { id: 1 })
+    .execute();
+
+5, To get a single result from the database, for example to get a user by id or name, you must use getOne:
+const timber = await getRepository(User)
+    .createQueryBuilder("user")
+    .where("user.id = :id OR user.name = :name", { id: 1, name: "Timber" })
+    .getOne();
+
+6, getOneOrFail will get a single result from the database, but if no result exists it will throw an EntityNotFoundError:
+const timber = await getRepository(User)
+    .createQueryBuilder("user")
+    .where("user.id = :id OR user.name = :name", { id: 1, name: "Timber" })
+    .getOneOrFail();
+
+7, To get multiple results from the database, for example, to get all users from the database, use getMany:
+const users = await getRepository(User)
+    .createQueryBuilder("user")
+    .getMany();
+
+const photosSums = await getRepository(User)
+    .createQueryBuilder("user")
+    .select("user.id")
+    .addSelect("SUM(user.photosCount)", "sum")
+    .groupBy("user.id")
+    .getRawMany();
+
+8, OPERATOR IN
+.where("user.name IN (:...names)", { names: [ "Timber", "Cristal", "Lina" ] })
+
+9, You can add a complex WHERE expression into an existing WHERE using Brackets
+createQueryBuilder("user")
+    .where("user.registered = :registered", { registered: true })
+    .andWhere(new Brackets(qb => {
+        qb.where("user.firstName = :firstName", { firstName: "Timber" })
+          .orWhere("user.lastName = :lastName", { lastName: "Saw" })
+    }))
+=>>>> the same: 
+SELECT ... FROM users user WHERE user.registered = true AND (user.firstName = 'Timber' OR user.lastName = 'Saw')
+
+=>> NOT 
+createQueryBuilder("user")
+    .where("user.registered = :registered", { registered: true })
+    .andWhere(new NotBrackets(qb => {
+        qb.where("user.firstName = :firstName", { firstName: "Timber" })
+          .orWhere("user.lastName = :lastName", { lastName: "Saw" })
+    }))
+
+10, ORDERBY
+createQueryBuilder("user")
+    .orderBy("user.id", "DESC")
+
+createQueryBuilder("user")
+    .orderBy("user.id", "ASC")
+
+    createQueryBuilder("user")
+    .orderBy("user.name")
+    .addOrderBy("user.id");
