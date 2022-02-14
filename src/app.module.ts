@@ -1,3 +1,5 @@
+import { TestConsumer } from './test.consumer';
+
 import { Module, Logger } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -31,8 +33,10 @@ import Modules from './modules';
       },
     }),
     // TypeOrmModule.forRoot(reportConfig),
+
     ...Modules,
   ],
-  providers: [Logger],
+  providers: [],
+  controllers: [AppController],
 })
 export class AppModule {}

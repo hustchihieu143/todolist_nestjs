@@ -5,6 +5,7 @@ import { UsersService } from './../users/users.service';
 import { ApiBody } from '@nestjs/swagger';
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { CreateUserDto } from '../users/dto/createUser.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +20,7 @@ export class AuthController {
       example: '{ "email": "thien.nguyen3@sotatek.com" }',
     },
   })
-  async createUser(@Body() createUser: CREATE_USER): Promise<any> {
+  async createUser(@Body() createUser: CreateUserDto): Promise<any> {
     return await this.usersService.createUser(createUser);
   }
 

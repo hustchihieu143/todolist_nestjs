@@ -2,11 +2,12 @@ import { Expose, Transform } from 'class-transformer';
 // import { dateTransformer } from 'src/shares/helpers/transformer';
 import {
   Column,
-  CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
+import { ProductEntity } from './products.entity';
 
 @Entity({
   name: 'users',
@@ -30,4 +31,7 @@ export class UserEntity {
   @Column()
   @Expose()
   age: number;
+
+  @OneToMany((type) => ProductEntity, (product) => product.user)
+  products: ProductEntity[];
 }

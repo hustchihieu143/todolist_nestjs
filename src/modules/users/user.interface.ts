@@ -9,3 +9,10 @@ export interface LOGIN_USER {
   email: string;
   password: string;
 }
+
+export interface UPDATE_USER {
+  name?: string;
+  email?: string;
+  age?: number;
+  password?: string;
+}

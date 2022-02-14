@@ -2,7 +2,8 @@ import { UserEntity } from './../../models/entities/user.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/models/repositories/user.repository';
-import { CREATE_USER } from './user.interface';
+import { CREATE_USER, UPDATE_USER } from './user.interface';
+import { RedisService } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class UsersService {
@@ -10,7 +11,7 @@ export class UsersService {
     @InjectRepository(UserRepository)
     public readonly userRepoReport: UserRepository,
     @InjectRepository(UserRepository)
-    public readonly userRepoMaster: UserRepository,
+    public readonly userRepoMaster: UserRepository, // private readonly redisService: RedisService,
   ) {}
 
   async findOne(email: string): Promise<UserEntity> {
@@ -27,5 +28,23 @@ export class UsersService {
     _user.age = body.age;
     const saveUser = await this.userRepoReport.save(_user);
     return { data: saveUser };
+  }
+
+  async deleteUser(id: number): Promise<any> {
+    return await this.userRepoReport.deleteUser(id);
+  }
+
+  async updateUser(id: number, body: UPDATE_USER): Promise<any> {
+    return await this.userRepoReport.updateById(id, body);
+  }
+
+  async getProfile(id: number): Promise<UserEntity> {
+    return await this.userRepoMaster.findOneById(id);
+  }
+
+  async testRedis(): Promise<void> {
+    // await this.redisService.getClient().set(`test`, 'phan chi hieu', 'ex', 60);
+    // const test = JSON.parse(await this.redisService.getClient().get('test'));
+    // console.log('test: ', test);
   }
 }

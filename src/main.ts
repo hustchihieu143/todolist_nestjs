@@ -1,3 +1,4 @@
+import { Transport } from '@nestjs/microservices';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import * as config from 'config';
@@ -5,6 +6,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ValidationPipe } from '@nestjs/common';
+import { NestMicroserviceOptions } from '@nestjs/common/interfaces/microservices/nest-microservice-options.interface';
 
 // const appPort = config.get<number>('app.port');
 // const dnsSentry = config.get<string>('sentry_dns');
@@ -32,6 +35,7 @@ async function bootstrap() {
       displayRequestDuration: true,
     },
   });
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();
