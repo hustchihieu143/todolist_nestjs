@@ -36,7 +36,7 @@ import Modules from './modules';
 
     ...Modules,
   ],
-  providers: [],
+  providers: [TestConsumer],
   controllers: [AppController],
 })
 export class AppModule {}
