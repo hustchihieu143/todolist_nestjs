@@ -29,6 +29,7 @@
     "@liaoliaots/nestjs-redis": "^5.2.0",
     "@nestjs/bull": "^0.4.2",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/microservices": "^8.2.6",

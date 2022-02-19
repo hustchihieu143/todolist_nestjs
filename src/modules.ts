@@ -7,11 +7,14 @@ import { redisConfig } from 'src/configs/redis.config';
 import { BullModule } from '@nestjs/bull';
 import { KafkaModule } from './modules/kafka/kafka.module';
 import { AppModule } from './app.module';
+import { ConfigModule } from '@nestjs/config';
+import databaseConfig from './configs/database.config';
 
 const Modules = [
   UsersModule,
   AuthModule,
-  KafkaModule,
+  ConfigModule.forRoot({ load: [databaseConfig] }),
+  // KafkaModule,
 
   // BullModule.forRoot({
   //   redis: redisConfig,

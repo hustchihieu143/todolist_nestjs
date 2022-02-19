@@ -4,7 +4,7 @@ import { Module, Logger } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { masterConfig, reportConfig } from './configs/database.config';
+// import { masterConfig, reportConfig } from './configs/database.config';
 import Modules from './modules';
 
 @Module({
@@ -36,7 +36,7 @@ import Modules from './modules';
 
     ...Modules,
   ],
-  providers: [TestConsumer],
+  providers: [],
   controllers: [AppController],
 })
 export class AppModule {}

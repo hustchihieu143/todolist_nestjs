@@ -19,6 +19,17 @@ async function bootstrap() {
     cors: true,
   });
 
+  // app.connectMicroservice({
+  //   transport: Transport.KAFKA,
+  //   options: {
+  //     client: {
+  //       brokers: ['localhost:9093'],
+  //     },
+  //   },
+  // });
+
+  // app.startAllMicroservices();
+
   // const appName = config.get<string>('app.name');
   const options = new DocumentBuilder()
     .addBearerAuth()

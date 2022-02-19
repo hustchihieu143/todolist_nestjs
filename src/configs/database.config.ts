@@ -1,3 +1,4 @@
+import { registerAs } from '@nestjs/config';
 import { getConfig } from './index';
 
 export interface DatabaseConfig {
@@ -11,18 +12,23 @@ export interface DatabaseConfig {
   logging: boolean;
 }
 
-export const masterConfig = {
-  ...getConfig().get<DatabaseConfig>('master'),
-  name: 'master',
-  entities: [__dirname + '/../models/entities/**/*{.ts,.js}'],
-  autoLoadEntities: true,
-  loading: true,
-};
+export default registerAs('database', () => ({
+  host: process.env.MYSQL_HOST,
+  port: process.env.MYSQL_PORT || 5432,
+}));
 
-export const reportConfig = {
-  ...getConfig().get<DatabaseConfig>('report'),
-  name: 'report',
-  entities: [__dirname + '/../models/entities/**/*{.ts,.js}'],
-  autoLoadEntities: true,
-  loading: true,
-};
+// export const masterConfig = {
+//   ...getConfig().get<DatabaseConfig>('master'),
+//   name: 'master',
+//   entities: [__dirname + '/../models/entities/**/*{.ts,.js}'],
+//   autoLoadEntities: true,
+//   loading: true,
+// };
+
+// export const reportConfig = {
+//   ...getConfig().get<DatabaseConfig>('report'),
+//   name: 'report',
+//   entities: [__dirname + '/../models/entities/**/*{.ts,.js}'],
+//   autoLoadEntities: true,
+//   loading: true,
+// };
