@@ -14,6 +14,17 @@ const Modules = [
   UsersModule,
   AuthModule,
   ConfigModule.forRoot({ load: [databaseConfig] }),
+  CacheModule.register(),
+  BullModule.forRoot({
+    // Bull Queue
+    redis: {
+      host: 'localhost',
+      port: 6380,
+    },
+  }),
+  BullModule.registerQueue({
+    name: 'message-queue',
+  }),
   // KafkaModule,
 
   // BullModule.forRoot({

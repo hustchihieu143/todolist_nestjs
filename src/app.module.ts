@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 // import { masterConfig, reportConfig } from './configs/database.config';
 import Modules from './modules';
+import { MessageProducerService } from './modules/queues/message.producer.service';
+import { MessageConsumer } from './modules/queues/message.consumer';
 
 @Module({
   imports: [
@@ -36,7 +38,7 @@ import Modules from './modules';
 
     ...Modules,
   ],
-  providers: [],
+  providers: [MessageProducerService, MessageConsumer],
   controllers: [AppController],
 })
 export class AppModule {}
