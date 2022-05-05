@@ -39,6 +39,6 @@ import { MessageConsumer } from './modules/queues/message.consumer';
     ...Modules,
   ],
   providers: [MessageProducerService, MessageConsumer],
-  controllers: [AppController],
+  controllers: [],
 })
 export class AppModule {}

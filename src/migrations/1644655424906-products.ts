@@ -31,7 +31,6 @@ export class products1644655424906 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    if (await queryRunner.hasTable('users'))
-      await queryRunner.dropTable('users');
+    if (await queryRunner.hasTable('users')) await queryRunner.dropTable('users');
   }
 }

@@ -1,17 +1,11 @@
 import { ProducerService } from './modules/kafka/producer.service';
-import {
-  Body,
-  CACHE_MANAGER,
-  Controller,
-  Get,
-  Inject,
-  Post,
-} from '@nestjs/common';
+import { Body, CACHE_MANAGER, Controller, Get, Inject, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import { MessageProducerService } from './modules/queues/message.producer.service';
 import { ApiBody } from '@nestjs/swagger';
+import { ConsumerService } from './modules/kafka/consumer.service';
 
 @Controller()
 export class AppController {
@@ -19,6 +13,8 @@ export class AppController {
     private configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private messageProducerService: MessageProducerService,
+    private producerService: ProducerService,
+    private consumerService: ConsumerService,
   ) {}
 
   @Get()
@@ -59,4 +55,23 @@ export class AppController {
     console.log('msg: ', body.msg);
     this.messageProducerService.sendMessage(body.msg);
   }
+
+  // @ApiBody({
+  //   type: String,
+  //   schema: {
+  //     example: '{ "msg": "hieu" }',
+  //   },
+  // })
+  // @Post('/test-kafka')
+  // async testKafka(@Body() data: any) {
+  //   await this.producerService.produce({
+  //     topic: 'test',
+  //     messages: [{ value: data.msg }],
+  //   });
+  // }
+
+  // @Post('/test-kafka')
+  // async getKafka() {
+  //   await th
+  // }
 }

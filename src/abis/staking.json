@@ -1,0 +1,488 @@
+{
+  "contractName": "StakingPool",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }],
+      "name": "ChangeColdWalletAddress",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+        { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }],
+      "name": "Paused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "indexed": true, "internalType": "bytes32", "name": "previousAdminRole", "type": "bytes32" },
+        { "indexed": true, "internalType": "bytes32", "name": "newAdminRole", "type": "bytes32" }
+      ],
+      "name": "RoleAdminChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "indexed": true, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": true, "internalType": "address", "name": "sender", "type": "address" }
+      ],
+      "name": "RoleGranted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "indexed": true, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": true, "internalType": "address", "name": "sender", "type": "address" }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "stakedId", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "stakeTime", "type": "uint256" }
+      ],
+      "name": "StableFinanceDeposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+      ],
+      "name": "StableFinanceEmergencyWithdraw",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "stakedId", "type": "uint256" }
+      ],
+      "name": "StableFinancePendingWithdraw",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": true, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        {
+          "indexed": false,
+          "internalType": "contract IERC20",
+          "name": "stableFinanceAcceptedToken",
+          "type": "address"
+        },
+        { "indexed": false, "internalType": "uint256", "name": "cap", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "minInvestment", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "maxInvestment", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "lockDuration", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "delayDuration", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "APR", "type": "uint256" }
+      ],
+      "name": "StableFinancePoolCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "delayDuration", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "APR", "type": "uint256" }
+      ],
+      "name": "StableFinancePoolUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": false, "internalType": "uint256", "name": "reward", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "stakedId", "type": "uint256" }
+      ],
+      "name": "StableFinanceRewardsHarvested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
+        { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
+        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "stakedId", "type": "uint256" }
+      ],
+      "name": "StableFinanceWithdraw",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }],
+      "name": "Unpaused",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "ADMIN",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DEFAULT_ADMIN_ROLE",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "STABLE_FINANCE_MAXIMUM_DELAY_DURATION",
+      "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "__StableFinancePool_init",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "coldWalletAddress",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "bytes32", "name": "role", "type": "bytes32" }],
+      "name": "getRoleAdmin",
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "grantRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "hasRole",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "renounceRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "bytes32", "name": "role", "type": "bytes32" },
+        { "internalType": "address", "name": "account", "type": "address" }
+      ],
+      "name": "revokeRole",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "address", "name": "_coldWalletAddress", "type": "address" }],
+      "name": "setColdWalletAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "contract IERC20", "name": "_stableFinanceAcceptedToken", "type": "address" },
+        { "internalType": "uint256", "name": "_cap", "type": "uint256" },
+        { "internalType": "uint256", "name": "_minInvestment", "type": "uint256" },
+        { "internalType": "uint256", "name": "_maxInvestment", "type": "uint256" },
+        { "internalType": "uint64", "name": "_APR", "type": "uint64" },
+        { "internalType": "uint256", "name": "_lockDuration", "type": "uint256" },
+        { "internalType": "uint256", "name": "_delayDuration", "type": "uint256" }
+      ],
+      "name": "stableFinanceAddPool",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stableFinanceAllowEmergencyWithdraw",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "address", "name": "_account", "type": "address" }
+      ],
+      "name": "stableFinanceBalanceOf",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "uint256", "name": "_stakedId", "type": "uint256" }
+      ],
+      "name": "stableFinanceClaimPendingWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "uint256", "name": "_stakedId", "type": "uint256" }
+      ],
+      "name": "stableFinanceClaimReward",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+      ],
+      "name": "stableFinanceDeposit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stableFinanceFlexLockDuration",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "uint256", "name": "_stakedId", "type": "uint256" },
+        { "internalType": "address", "name": "_account", "type": "address" }
+      ],
+      "name": "stableFinancePendingReward",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "stableFinancePoolInfo",
+      "outputs": [
+        { "internalType": "contract IERC20", "name": "stableFinanceAcceptedToken", "type": "address" },
+        { "internalType": "uint256", "name": "cap", "type": "uint256" },
+        { "internalType": "uint256", "name": "totalStaked", "type": "uint256" },
+        { "internalType": "uint256", "name": "minInvestment", "type": "uint256" },
+        { "internalType": "uint256", "name": "maxInvestment", "type": "uint256" },
+        { "internalType": "uint64", "name": "APR", "type": "uint64" },
+        { "internalType": "uint256", "name": "lockDuration", "type": "uint256" },
+        { "internalType": "uint256", "name": "delayDuration", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stableFinancePoolLength",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stableFinanceRewardDistributor",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stableFinanceRewardDistributorToken",
+      "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "bool", "name": "_shouldAllow", "type": "bool" }],
+      "name": "stableFinanceSetAllowEmergencyWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "_flexLockDuration", "type": "uint256" }],
+      "name": "stableFinanceSetFlexLockDuration",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "uint256", "name": "_delayDuration", "type": "uint256" },
+        { "internalType": "uint64", "name": "_APR", "type": "uint64" }
+      ],
+      "name": "stableFinanceSetPool",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "address", "name": "_stableFinanceRewardDistributor", "type": "address" },
+        { "internalType": "contract IERC20", "name": "_stableFinanceRewardDistributorToken", "type": "address" }
+      ],
+      "name": "stableFinanceSetRewardDistributor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "", "type": "uint256" },
+        { "internalType": "address", "name": "", "type": "address" }
+      ],
+      "name": "stableFinanceStakingData",
+      "outputs": [
+        { "internalType": "uint256", "name": "balance", "type": "uint256" },
+        { "internalType": "uint256", "name": "stakingDataRecordCount", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "address", "name": "_account", "type": "address" }
+      ],
+      "name": "stableFinanceTotalPendingReward",
+      "outputs": [{ "internalType": "uint256", "name": "totalReward", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }],
+      "name": "stableFinanceTotalStaked",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "address", "name": "_account", "type": "address" },
+        { "internalType": "uint256", "name": "_stakedId", "type": "uint256" }
+      ],
+      "name": "stableFinanceUserPendingWithdrawalsData",
+      "outputs": [
+        { "internalType": "uint256", "name": "_withdrawAmount", "type": "uint256" },
+        { "internalType": "uint256", "name": "_nextWithdrawAmount", "type": "uint256" },
+        { "internalType": "uint256", "name": "_nextWithdrawAt", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "address", "name": "_account", "type": "address" },
+        { "internalType": "uint256", "name": "_stakedId", "type": "uint256" }
+      ],
+      "name": "stableFinanceUserStakingData",
+      "outputs": [
+        { "internalType": "uint256", "name": "_balance", "type": "uint256" },
+        { "internalType": "uint256", "name": "_stakeTime", "type": "uint256" },
+        { "internalType": "uint256", "name": "_lastClaimTime", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_poolId", "type": "uint256" },
+        { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+        { "internalType": "uint256", "name": "_stakedId", "type": "uint256" }
+      ],
+      "name": "stableFinanceWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }],
+      "name": "supportsInterface",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

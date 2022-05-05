@@ -25,26 +25,16 @@ export class UserRepository extends BaseRepository<UserEntity> {
   }
 
   public async findBatch(from: number, count: number): Promise<UserEntity[]> {
-    return this.createQueryBuilder()
-      .orderBy('id', 'ASC')
-      .skip(from)
-      .take(count)
-      .getMany();
+    return this.createQueryBuilder().orderBy('id', 'ASC').skip(from).take(count).getMany();
   }
 
   public async deleteUser(id: number): Promise<void> {
-    this.createQueryBuilder()
-      .delete()
-      .from(UserEntity)
-      .where('id = :id', { id: id })
-      .execute();
+    this.createQueryBuilder().delete().from(UserEntity).where('id = :id', { id: id }).execute();
   }
 
   public async updateById(id: number, body: UPDATE_USER): Promise<void> {
-    console.log('body: ', body);
     const update = {};
     if (body.email) {
-      console.log('okoek: ', body.email);
       update['email'] = body.email;
     }
     if (body.name) {
@@ -53,15 +43,10 @@ export class UserRepository extends BaseRepository<UserEntity> {
     if (body.age) {
       update['age'] = body.age;
     }
-    await this.createQueryBuilder()
-      .update(UserEntity)
-      .set(update)
-      .where('id = :id', { id: id })
-      .execute();
+    await this.createQueryBuilder().update(UserEntity).set(update).where('id = :id', { id: id }).execute();
   }
 
   public async findOneById(id: number): Promise<UserEntity> {
-    console.log('id: ', id);
     return await this.createQueryBuilder('users')
       .select(['users.*', 'product.name'])
       .innerJoin('users.products', 'product', `product.userId = ${id}`)

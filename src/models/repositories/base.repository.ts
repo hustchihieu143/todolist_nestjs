@@ -10,12 +10,9 @@ export class BaseRepository<T extends { id: number }> extends Repository<T> {
     const tableName = this.getTableName(entities[0].constructor.name);
     const columnsString = quotedColumns.join(', ');
     const placeholder = new Array(columns.length).fill('?');
-    const placeholders = new Array(entities.length)
-      .fill(`(${placeholder})`)
-      .join(', ');
+    const placeholders = new Array(entities.length).fill(`(${placeholder})`).join(', ');
     const valueString = quotedColumns.map(
-      (column) =>
-        `${column} = IF(VALUES(operationId) > operationId, VALUES(${column}), ${column})`,
+      (column) => `${column} = IF(VALUES(operationId) > operationId, VALUES(${column}), ${column})`,
     );
     let sql = '';
     sql += `INSERT INTO \`${tableName}\` (${columnsString})`;
@@ -31,11 +28,7 @@ export class BaseRepository<T extends { id: number }> extends Repository<T> {
     await this.manager.query(sql, params);
   }
 
-  public async findBatch(
-    fromId: number,
-    from: number,
-    count: number,
-  ): Promise<T[]> {
+  public async findBatch(fromId: number, from: number, count: number): Promise<T[]> {
     return this.createQueryBuilder()
       .where('id >= :fromId', { fromId })
       .orderBy('id', 'ASC')
@@ -57,9 +50,7 @@ export class BaseRepository<T extends { id: number }> extends Repository<T> {
 
   protected getColumns(target: string): string[] {
     const queryBuilder = this.createQueryBuilder();
-    return queryBuilder.connection
-      .getMetadata(target)
-      .columns.map((column) => column.propertyName);
+    return queryBuilder.connection.getMetadata(target).columns.map((column) => column.propertyName);
   }
 
   protected getTableName(target: string): string {
