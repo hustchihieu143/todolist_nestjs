@@ -41,6 +41,7 @@ export class CrawlUtils {
         }
       },
     );
+    console.log('eventLogs: ', eventLogs);
     return eventLogs;
   }
 

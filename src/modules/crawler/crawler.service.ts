@@ -16,7 +16,7 @@ export class CrawlerService {
   })
   async startValidationProcess(): Promise<void> {
     try {
-      console.log('-------------start crawler');
+      console.log('-------------start crawler------------------');
       const crawler = new CrawlEvent(this.crawlStatusRepository);
       await crawler.start();
     } catch (error) {}

@@ -1,4 +1,4 @@
-import { mLandTokenContract, maxRange } from './config/crawler.config';
+import { stakingPoolContract, maxRange } from './config/crawler.config';
 import { Injectable } from '@nestjs/common';
 import { CrawlUtils } from './utils/crawler-utils';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +14,7 @@ export class CrawlEvent {
   async start(): Promise<void> {
     try {
       // CRAWLER DIGGER
-      await this.rootControllerCrawl(mLandTokenContract);
+      await this.rootControllerCrawl(stakingPoolContract);
     } catch (error) {
       console.log(error);
     }
@@ -24,6 +24,7 @@ export class CrawlEvent {
     const crawlUtils = new CrawlUtils(this.crawlStatusRepository);
     while (true) {
       const { lateBlockSC, getBlockDB } = await this.getBlockSCAndBlockDB(crawlUtils, contract);
+      console.log('lateBlockSC, getBlockDB: ', lateBlockSC, getBlockDB);
       const checkBlock: boolean = this.checkBlockValid(lateBlockSC, getBlockDB);
       if (checkBlock === false) {
         continue;
@@ -56,9 +57,13 @@ export class CrawlEvent {
     contract: ContractDto,
   ): Promise<void> {
     const fromBlock: number = getBlockDB;
+
     const toBlock: number = this.getToBlock(lateBlockSC, getBlockDB);
+
     const events = await crawlUtils.crawlEvent(fromBlock, toBlock, contract);
+
     await this.handlerEvent(contract, events); // filter handler event of contract
+
     await this.updateBlockCrawlSuccess(toBlock, contract.contractName);
   }
 
