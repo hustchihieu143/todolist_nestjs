@@ -1,7 +1,8 @@
-import { Logger, OnModuleInit } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
+  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -9,31 +10,25 @@ import {
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway({
-  cors: { origin: ['http://localhost:8080'] },
+  cors: {
+    origin: '*',
+  },
 })
-export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit {
+export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   users = 0;
   private logger: Logger = new Logger('AppGateway');
 
-  onModuleInit() {
-    console.log('chat');
+  afterInit(server: Server) {
+    this.logger.log('Init');
   }
 
-  handleConnection(client: Socket) {
-    const clientId = client.id;
-    this.users++;
-    console.log('user connecting');
-    this.server.emit('users', this.users);
-    console.log(this.users);
+  handleConnection(client: Socket, ...args: any[]) {
+    this.logger.log(`clientId ${client.id} is connecting`);
   }
 
   handleDisconnect(client: Socket) {
-    const clientId = client.id;
-    this.users--;
-
-    // Notify connected clients of current users
-    this.server.emit('users', this.users);
+    this.logger.log(`clientId ${client.id} is disconnected`);
   }
 
   @SubscribeMessage('chat')

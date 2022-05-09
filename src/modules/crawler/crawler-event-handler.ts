@@ -1,7 +1,6 @@
 import { stakingPoolContract, maxRange } from './config/crawler.config';
 import { Injectable } from '@nestjs/common';
 import { CrawlUtils } from './utils/crawler-utils';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CrawlStatusRepository } from '../../models/repositories/crawler.repository';
 import { ContractDto, GetBlockDto } from './dto/contract.dto';
 import { HandlerEventUtils } from './utils/handler.utils';
