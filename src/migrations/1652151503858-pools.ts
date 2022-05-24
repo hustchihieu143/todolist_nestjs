@@ -23,6 +23,11 @@ export class pools1652151503858 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'APR',
+            type: 'bigint',
+            isNullable: true,
+          },
+          {
             name: 'lockDuration',
             type: 'int',
             isNullable: true,

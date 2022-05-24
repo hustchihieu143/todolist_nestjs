@@ -1,4 +1,4 @@
-import { Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import * as config from 'config';
@@ -7,6 +7,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/shares/filters/http-exception.filter';
 import { NestMicroserviceOptions } from '@nestjs/common/interfaces/microservices/nest-microservice-options.interface';
 
 // const appPort = config.get<number>('app.port');
@@ -18,6 +19,14 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
+
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.MQTT,
+  //   options: {
+  //     url: 'mqtt://localhost:1883',
+  //     protocol: 'tcp',
+  //   },
+  // });
 
   // app.connectMicroservice({
   //   transport: Transport.KAFKA,
@@ -38,7 +47,7 @@ async function bootstrap() {
     .setVersion('/api/v1')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup(`${'api/v1'}/docs`, app, document, {
+  SwaggerModule.setup(`${'api'}`, app, document, {
     customSiteTitle: 'todolist',
     swaggerOptions: {
       docExpansion: 'list',
@@ -47,6 +56,8 @@ async function bootstrap() {
     },
   });
   app.useGlobalPipes(new ValidationPipe());
+  // Exceptions
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 bootstrap();

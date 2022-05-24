@@ -15,6 +15,11 @@ export class histories1652152126655 implements MigrationInterface {
             unsigned: true,
           },
           {
+            name: 'account',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'poolId',
             type: 'int',
             isNullable: true,
@@ -26,6 +31,11 @@ export class histories1652152126655 implements MigrationInterface {
           },
           {
             name: 'stakedId',
+            type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'type',
             type: 'int',
             isNullable: true,
           },

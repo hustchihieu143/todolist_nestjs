@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import { MessageProducerService } from './modules/queues/message.producer.service';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { ConsumerService } from './modules/kafka/consumer.service';
 
+@ApiTags('App')
 @Controller()
 export class AppController {
   constructor(

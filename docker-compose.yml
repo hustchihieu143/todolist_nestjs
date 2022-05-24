@@ -61,3 +61,10 @@ services:
       JVM_OPTS: '-Xms160M -Xmx480M -Xss1800K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify'
     depends_on:
       - 'kafka'
+
+  mosquitto:
+    image: eclipse-mosquitto
+    # volumes:
+    #   - ./:/mosquitto/:rw
+    ports:
+      - 1883:1883

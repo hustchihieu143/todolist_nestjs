@@ -9,7 +9,6 @@ const Web3 = require('web3');
 @Injectable()
 export class CrawlUtils {
   constructor(private crawlStatusRepository: CrawlStatusRepository) {}
-
   async getBlockNumber(contract: ContractDto): Promise<number> {
     const log = await this.crawlStatusRepository.findContractName(contract.contractName);
     if (!log[0]) {
@@ -18,7 +17,6 @@ export class CrawlUtils {
       crawl.blockNumber = contract.first_crawl_block;
       crawl.contractName = contract.contractName;
       await this.crawlStatusRepository.save(crawl, { reload: false });
-
       return crawl.blockNumber;
     }
     return Number(log[0].block_number);
@@ -32,7 +30,7 @@ export class CrawlUtils {
     const eventLogs: LogEventDto[] = await contractWeb3.getPastEvents(
       'allEvents',
       {
-        fromBlock: fromBlockNumber,
+        fromBlock: fromBlockNumber + 1,
         toBlock: toBlockNumber,
       },
       (err) => {
