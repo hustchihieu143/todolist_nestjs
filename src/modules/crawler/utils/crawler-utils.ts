@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { LogEventDto } from '../dto/log-event-crawler.dto';
 import { CrawlStatus } from 'src/models/entities/crawler';
-const Web3 = require('web3');
+import Web3 from 'web3';
 
 @Injectable()
 export class CrawlUtils {
@@ -27,7 +27,7 @@ export class CrawlUtils {
     const web3 = new Web3(web3Provider);
     const contractWeb3 = new web3.eth.Contract(contract.abi, contract.contract_address);
 
-    const eventLogs: LogEventDto[] = await contractWeb3.getPastEvents(
+    const eventLogs: any = await contractWeb3.getPastEvents(
       'allEvents',
       {
         fromBlock: fromBlockNumber + 1,

@@ -40,6 +40,16 @@ export class histories1652152126655 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'status',
+            type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'stakingTime',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'datetime',
             isNullable: false,

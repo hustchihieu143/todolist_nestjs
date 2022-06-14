@@ -20,5 +20,11 @@ export class HistoryEntity {
   type: number;
 
   @Column()
+  status: number;
+
+  @Column()
+  stakingTime: string;
+
+  @Column()
   stakedId: number;
 }

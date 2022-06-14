@@ -13,6 +13,7 @@ import { CrawlerModule } from './modules/crawler/crawler.module';
 import { DatabaseCommonModule } from './models/database-common';
 import { ConsoleModule } from 'nestjs-console';
 import { PoolModule } from './modules/pool/pool.module';
+import { HistoryModule } from './modules/history/history.module';
 
 const Modules = [
   UsersModule,
@@ -34,5 +35,6 @@ const Modules = [
     name: 'message-queue',
   }),
   EventsModule,
+  HistoryModule,
 ];
 export default Modules;

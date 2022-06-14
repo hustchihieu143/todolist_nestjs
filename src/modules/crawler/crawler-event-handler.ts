@@ -53,6 +53,7 @@ export class CrawlEvent {
   checkBlockValid(lateBlockSC: number, getBlockDB: number): boolean {
     if (getBlockDB >= lateBlockSC) {
       console.log('please check default block in .env it should not be too big than lateBlock ......😆😆');
+      // this.setNextTickTimer(5000);
       return false;
     } else {
       return true;
@@ -91,9 +92,12 @@ export class CrawlEvent {
           break;
         }
         case EventContract.WithDraw: {
+          await this.saveDataHistory(event);
           break;
         }
         case EventContract.ClaimReward: {
+          await this.saveDataHistory(event);
+          break;
         }
       }
     });
@@ -118,27 +122,34 @@ export class CrawlEvent {
     // await this.poolRepository.createPool(poolData);
   }
   async saveDataHistory(event: any): Promise<void> {
-    if (event.returnValues.poolId < 2) return;
+    // if (event.returnValues.poolId < 2) return;
     const historyData = new HistoryEntity();
 
     switch (event.event) {
       case 'StakingPoolDeposit': {
         historyData.type = 1;
+        historyData.status = 1;
+        historyData.amount = Number(new BigNumber(event.returnValues.amount).div(Math.pow(10, 18)));
+        historyData.stakingTime = event.returnValues.time.toString();
+        console.log('deposit----------------------------');
         break;
       }
       case 'StakingPoolWithdraw': {
         historyData.type = 2;
+        historyData.amount = Number(new BigNumber(event.returnValues.amount).div(Math.pow(10, 18)));
+        this.historyRepository.updateStatusHistory(event.returnValues.poolId, 2, event.returnValues.stakedId);
         break;
       }
       case 'StakingPoolClaimReward': {
         historyData.type = 3;
+        historyData.amount = Number(new BigNumber(event.returnValues.totalReward).div(Math.pow(10, 18)));
+        this.historyRepository.updateStatusHistory(event.returnValues.poolId, 3, event.returnValues.stakedId);
         break;
       }
     }
 
     historyData.poolId = event.returnValues.poolId;
     historyData.account = event.returnValues.account;
-    historyData.amount = Number(new BigNumber(event.returnValues.amount).div(Math.pow(10, 18)));
     historyData.stakedId = event.returnValues.stakedId;
 
     await this.historyRepository.save(historyData);
