@@ -26,7 +26,7 @@ export class histories1652152126655 implements MigrationInterface {
           },
           {
             name: 'amount',
-            type: 'int',
+            type: 'float',
             isNullable: true,
           },
           {
@@ -46,6 +46,11 @@ export class histories1652152126655 implements MigrationInterface {
           },
           {
             name: 'stakingTime',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'rewardClaimed',
             type: 'varchar',
             isNullable: true,
           },

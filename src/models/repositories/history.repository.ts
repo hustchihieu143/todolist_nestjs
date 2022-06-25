@@ -14,7 +14,7 @@ export class HistoryRepository extends Repository<HistoryEntity> {
   async getTotalStaked(poolId: number): Promise<number> {
     const totalStakedInPool = await this.createQueryBuilder('histories')
       .select('SUM(histories.amount)', 'total')
-      .where('histories.status = :status ', { status: 1 })
+      .where('histories.status = 1 OR histories.status = 2')
       .andWhere('histories.poolId = :poolId', { poolId: poolId })
       .getRawOne();
     return totalStakedInPool.total;
@@ -23,9 +23,10 @@ export class HistoryRepository extends Repository<HistoryEntity> {
   async getTotalStakedUser(poolId: number, account: string): Promise<number> {
     const totalStakedInPool = await this.createQueryBuilder('histories')
       .select('SUM(histories.amount)', 'total')
-      .where('histories.status = :status ', { status: 1 })
+      .where('histories.account = :account', { account: account })
       .andWhere('histories.poolId = :poolId', { poolId: poolId })
-      .andWhere('histories.account = :account', { account: account })
+      .andWhere('histories.status = 1 OR histories.status = 2')
+
       .getRawOne();
     return totalStakedInPool.total;
   }
@@ -33,8 +34,8 @@ export class HistoryRepository extends Repository<HistoryEntity> {
   async getStakingPool(account?: string, poolId?: number): Promise<any> {
     const stakingPool = await this.createQueryBuilder('histories')
       .select('*')
-      .where('account = :account', { account: account })
-      .andWhere('poolId = :poolId AND status = 1', { poolId: poolId })
+      .where('histories.account = :account', { account: account })
+      .andWhere('poolId = :poolId AND (status = 1 OR status = 2)', { poolId: poolId })
       .execute();
 
     return stakingPool;
@@ -69,5 +70,22 @@ export class HistoryRepository extends Repository<HistoryEntity> {
       .where('type = 1 AND account = :account', { account: account })
       .getRawOne();
     return totalDeposit.total;
+  }
+
+  async getTotalWithdrawal(account: string): Promise<number> {
+    const totalWithdrawal = await this.createQueryBuilder('histories')
+      .select('SUM(amount)', 'total')
+      .where('account = :account AND status = 2', { account: account })
+      .getRawOne();
+    const rs = totalWithdrawal.total !== null ? totalWithdrawal.total : 0;
+    return rs;
+  }
+  c;
+  async getTotalRewardClaimedUser(account: string): Promise<number> {
+    const totalRewardClaimedUser = await this.createQueryBuilder('histories')
+      .select('SUM(rewardClaimed)', 'total')
+      .where('account = :account', { account: account })
+      .getRawOne();
+    return totalRewardClaimedUser.total;
   }
 }

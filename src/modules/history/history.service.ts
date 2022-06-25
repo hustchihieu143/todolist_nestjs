@@ -14,4 +14,12 @@ export class HistoryService {
   async getMyStakeAmount(account: string) {
     return this.historyRepo.getMyStakeAmount(account);
   }
+
+  async getTotalWithdrawal(account: string) {
+    return await this.historyRepo.getTotalWithdrawal(account);
+  }
+
+  async getTotalRewardClaimedUser(account: string) {
+    return await this.historyRepo.getTotalRewardClaimedUser(account);
+  }
 }

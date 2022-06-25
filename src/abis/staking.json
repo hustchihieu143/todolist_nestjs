@@ -52,6 +52,7 @@
         { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
         { "indexed": false, "internalType": "uint256", "name": "poolId", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "totalReward", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "reward", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "stakedId", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "time", "type": "uint256" }
       ],

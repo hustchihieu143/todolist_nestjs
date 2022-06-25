@@ -142,6 +142,8 @@ export class CrawlEvent {
       }
       case 'StakingPoolClaimReward': {
         historyData.type = 3;
+        const amountReward = Number(new BigNumber(event.returnValues.reward).div(Math.pow(10, 18)));
+        historyData.rewardClaimed = amountReward.toFixed(5);
         historyData.amount = Number(new BigNumber(event.returnValues.totalReward).div(Math.pow(10, 18)));
         this.historyRepository.updateStatusHistory(event.returnValues.poolId, 3, event.returnValues.stakedId);
         break;

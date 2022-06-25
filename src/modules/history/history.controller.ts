@@ -25,4 +25,16 @@ export class HistoryController {
     const rs = await this.historyService.getMyStakeAmount(account);
     return { data: rs };
   }
+
+  @Get('/total-withdrawal/:account')
+  async getTotalWithdrawal(@Param('account') account: string) {
+    const rs = await this.historyService.getTotalWithdrawal(account);
+    return { data: rs };
+  }
+
+  @Get('/total-reward-claimed/:account')
+  async getTotalRewardClaimedUser(@Param('account') account: string) {
+    const rs = await this.historyService.getTotalRewardClaimedUser(account);
+    return { data: rs };
+  }
 }

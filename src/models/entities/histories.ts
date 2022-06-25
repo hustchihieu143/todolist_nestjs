@@ -27,4 +27,7 @@ export class HistoryEntity {
 
   @Column()
   stakedId: number;
+
+  @Column()
+  rewardClaimed: string;
 }

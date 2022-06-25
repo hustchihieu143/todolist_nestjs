@@ -13,6 +13,7 @@ export class PoolController {
   @Get()
   async getAllPool(@Query() poolDto?: PoolDto): Promise<ResponseDto<PoolEntity[]>> {
     const data = await this.poolService.getAllPool(poolDto?.account);
+
     return { data: data };
   }
 
