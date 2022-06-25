@@ -20,7 +20,7 @@ const Modules = [
   PoolModule,
   AuthModule,
   ConfigModule.forRoot({ load: [databaseConfig] }),
-  MqttModule1,
+  // MqttModule1,
   CrawlerModule,
   DatabaseCommonModule,
   ConsoleModule,
