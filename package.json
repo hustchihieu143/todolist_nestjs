@@ -25,7 +25,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "console:dev": "ts-node -r tsconfig-paths/register src/console.ts",
-    "console": "node dist/console.js"
+    "console": "node dist/console.js",
+    "start:prod": "node dist/main.js"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^5.2.0",
