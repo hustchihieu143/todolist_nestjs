@@ -23,11 +23,17 @@ export class HistoryRepository extends Repository<HistoryEntity> {
   async getTotalStakedUser(poolId: number, account: string): Promise<number> {
     const totalStakedInPool = await this.createQueryBuilder('histories')
       .select('SUM(histories.amount)', 'total')
-      .where('histories.account = :account', { account: account })
-      .andWhere('histories.poolId = :poolId', { poolId: poolId })
-      .andWhere('histories.status = 1 OR histories.status = 2')
+      .where('histories.poolId = :poolId AND histories.account = :account AND histories.status = 1', {
+        poolId: poolId,
+        account: account,
+      })
+      .orWhere('histories.poolId = :poolId AND histories.account = :account AND histories.status = 2', {
+        poolId: poolId,
+        account: account,
+      })
 
       .getRawOne();
+    console.log('totalStakedInPool.total: ', totalStakedInPool.total);
     return totalStakedInPool.total;
   }
 
